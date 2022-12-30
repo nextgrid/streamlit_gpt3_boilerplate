@@ -1,8 +1,1 @@
 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
-
-use .\env\Scripts\activate in terminal
-
-usign https://lablab.ai/t/gpt3-streamlit
-
-set1 = ["shakespeare", "confucious", "seamus heaney", "edgar allan poe"]
-set2 = ["sutd", "university education", "engineering", "stem"]
