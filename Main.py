@@ -19,8 +19,7 @@ def app():
     # Using the streamlit cache
     @st.cache
     def process_prompt(input):
-
-        return pred.model_prediction(input=input.strip() , api_key=api_key)
+        return pred.model_prediction(input=str(input).strip() , api_key=api_key)
 
     if api_key:
 
