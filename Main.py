@@ -18,8 +18,8 @@ def app():
     api_key = st.sidebar.text_input("APIkey", type="password")
     # Using the streamlit cache
     @st.cache
-    def process_prompt(input):
-        return pred.model_prediction(input=str(input).strip() , api_key=api_key)
+    def process_prompt(inp):
+        return pred.model_prediction(input=str(inp).strip() , api_key=api_key)
 
     if api_key:
 
@@ -27,7 +27,7 @@ def app():
         st.title("Write a poem based on these words")
 
         poets_list = ["shakespeare", "confucious", "seamus heaney", "edgar allan poe"]
-        nouns_list = ["sutd", "university education", "engineering", "STEM"]
+        nouns_list = ["sutd", "university education", "engineering", "STEM", "test"]
 
         with st.sidebar:
             st.write("all poets")
@@ -47,7 +47,7 @@ def app():
 
         if st.button("Submit"):
             with st.spinner(text="In progress"):
-                report_text = process_prompt(input)
+                report_text = process_prompt(st.session_state.textbox )
                 st.markdown(report_text)
     else:
         st.error("🔑 Please enter API Key")
