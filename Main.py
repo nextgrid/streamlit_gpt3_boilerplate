@@ -26,7 +26,18 @@ def app():
         # Setting up the Title
         st.title("Write a poem based on these words")
 
-        poets_list = ["shakespeare", "confucious", "seamus heaney", "edgar allan poe"]
+        poets_list = ["Shakespeare", "Matsuo Basho", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost", "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
+        
+        chi_poets = ["Li He", "Confucius", "Mencius", "LaoTzu"]
+        
+        chi_styles = ["Airs (风)", "Ode (雅)", "Hymn (颂)"]
+        
+        jap_poets = ["Matsuo Basho"]
+        
+        jap_styles = ["haiku", "tanka"]
+        
+        
+        
         nouns_list = ["sutd", "university education", "engineering", "STEM", "test"]
 
         with st.sidebar:
