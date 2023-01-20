@@ -26,7 +26,7 @@ def app():
         # Setting up the Title
         st.title("Write a poem based on these words")
 
-        poets_list = ["Shakespeare", "Matsuo Basho", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost", "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
+        eng_poets_list = ["Shakespeare", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost", "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
         
         chi_poets = ["Li He", "Confucius", "Mencius", "LaoTzu"]
         
@@ -36,7 +36,7 @@ def app():
         
         jap_styles = ["haiku", "tanka"]
         
-        
+        poetry_forms = ['free verse', 'sonnet', 'acrostic', 'limerick', 'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle']
         
         nouns_list = ["sutd", "university education", "engineering", "STEM", "test"]
 
