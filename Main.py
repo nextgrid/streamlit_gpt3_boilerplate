@@ -1,31 +1,39 @@
 import streamlit as st
-from model import GeneralModel
+# from model import GeneralModel
 
+# checks if api key is valid
+def valid_api_key(inp: str):
+    try:
+        st.session_state.pred.model_prediction(
+            input="test", api_key=inp)
+        return True
+    except Exception as e:
+        st.error("API Key check failed: " + str(e))
+        return False
+
+# updates api kei in session state
+def update_api_key(inp: str):
+    st.session_state.api_key = inp
 
 def app():
 
-    # Creating an object of prediction service
-    pred = GeneralModel()
+    if st.session_state.api_key:
+        col1, col2 = st.columns(2)
+        @st.cache
+        def process_prompt(inp):
+            return st.session_state.pred.model_prediction(input=str(inp).strip(), api_key=st.session_state.api_key)
 
-    api_key = st.sidebar.text_input("APIkey", type="password")
-    # Using the streamlit cache
+        with col1:
+            # Setting up the Title
+            st.title("Write a poem based on these words")
 
-    @st.cache
-    def process_prompt(inp):
-        return pred.model_prediction(input=str(inp).strip(), api_key=api_key)
+            # available options for poets and nouns
+            region_list = ["Asia", "Europe"]
 
-    if api_key:
+            nouns_list = ["sutd", "university education",
+                        "engineering", "STEM", "test", "examinations"]
 
-        # Setting up the Title
-        st.title("Write a poem based on these words")
-
-        # available options for poets and nouns
-        region_list = ["Asia", "Europe"]
-
-        nouns_list = ["sutd", "university education",
-                      "engineering", "STEM", "test", "examinations"]
-
-        with st.sidebar:
+            # with st.sidebar:
             region_option = st.selectbox(
                 "Select a region", region_list)
 
@@ -54,18 +62,34 @@ def app():
 
                 st.session_state.textbox = "Write a " + poet_option + \
                     " poem about the benefits of " + filtered
+                    
+        with col2:
+            st.title("Output appears here")
 
-        # for initializing textbox
-        st.text_area(
-            "Use the example below or input your own text in English",
-            key="textbox",
-            max_chars=150
-        )
+            # for initializing textbox
+            answer = st.text_area(
+                "Use the example below or input your own text in English",
+                key="textbox",
+                max_chars=150
+            )
 
-        # submit button
-        if st.button("Submit"):
-            with st.spinner(text="In progress"):
-                report_text = process_prompt(st.session_state.textbox)
-                st.markdown(report_text)
+            # submit button
+            if st.button("Submit"):
+                try:
+                    with st.spinner(text="In progress"):
+                        report_text = process_prompt(st.session_state.textbox)
+                        st.markdown(report_text)
+                except Exception as e:
+                    st.error("Error: " + str(e))
+                    restart = st.button("Re-enter API Key",
+                                        on_click=update_api_key(""))
     else:
-        st.error("🔑 Please enter API Key")
+        with st.form("API_Key_Form"):
+            api_key = st.text_input("APIkey", type="password")
+
+            submitted = st.form_submit_button("Submit")
+            if submitted:
+                if valid_api_key(api_key):
+                    update_api_key(api_key)
+                    st.experimental_rerun()
+        # st.error("🔑 Please enter API Key")
