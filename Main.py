@@ -2,6 +2,8 @@ import streamlit as st
 # from model import GeneralModel
 
 # checks if api key is valid
+
+
 def valid_api_key(inp: str):
     try:
         st.session_state.pred.model_prediction(
@@ -12,13 +14,17 @@ def valid_api_key(inp: str):
         return False
 
 # updates api kei in session state
+
+
 def update_api_key(inp: str):
     st.session_state.api_key = inp
+
 
 def app():
 
     if st.session_state.api_key:
         col1, col2 = st.columns(2)
+
         @st.cache
         def process_prompt(inp):
             return st.session_state.pred.model_prediction(input=str(inp).strip(), api_key=st.session_state.api_key)
@@ -31,19 +37,21 @@ def app():
             region_list = ["Asia", "Europe"]
 
             nouns_list = ["sutd", "university education",
-                        "engineering", "STEM", "test", "examinations"]
-            eng_poets_list = ["Shakespeare", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost", "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
-            
+                          "engineering", "STEM", "test", "examinations"]
+            eng_poets_list = ["Shakespeare", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost",
+                              "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
+
             chi_poets = ["Li He", "Confucius", "Mencius", "LaoTzu"]
-            
+
             chi_styles = ["Airs (风)", "Ode (雅)", "Hymn (颂)"]
-            
+
             jap_poets = ["Matsuo Basho"]
-            
+
             jap_styles = ["haiku", "tanka"]
-            
-            poetry_forms = ['free verse', 'sonnet', 'acrostic', 'limerick', 'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle']
-            
+
+            poetry_forms = ['free verse', 'sonnet', 'acrostic', 'limerick',
+                            'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle']
+
             # available options for poets and nouns
             region_list = ["Asia", "Europe"]
 
@@ -76,7 +84,7 @@ def app():
 
                 st.session_state.textbox = "Write a " + poet_option + \
                     " poem about the benefits of " + filtered
-                    
+
         with col2:
             st.title("Output appears here")
 
