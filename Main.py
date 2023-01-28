@@ -31,26 +31,23 @@ def app():
 
         with col1:
             # Setting up the Title
-            st.title("Write a poem based on these words")
+            st.title("Give our poet a style and topic")
 
             # available options for poets and nouns
             region_list = ["Asia", "Europe"]
 
-            nouns_list = ["sutd", "university education",
-                          "engineering", "STEM", "test", "examinations"]
+            nouns_list = ["Singapore University of Technology and Design (SUTD)", "university education", "engineering", "STEM", "design thinking"]
             eng_poets_list = ["Shakespeare", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost",
                               "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
 
             chi_poets = ["Li He", "Confucius", "Mencius", "LaoTzu"]
 
-            chi_styles = ["Airs (风)", "Ode (雅)", "Hymn (颂)"]
-
             jap_poets = ["Matsuo Basho"]
 
-            jap_styles = ["haiku", "tanka"]
-
             poetry_forms = ['free verse', 'sonnet', 'acrostic', 'limerick',
-                            'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle']
+                            'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle', 'Victorian', 'Edwardian', 'Georgian', 'Baroque', 'Surrealistic', 'Shakespearean']
+            
+            asia_genres = ["Chinese: Airs (风)", "Chinese: Ode (雅)", "Chinese: Hymn (颂)", "Haiku", "Japanese: Tanka", "Malay: Syair", "Burmese: Yadu", "Korean: Sijo", "Indian or Sri Lankan: Kural"]
 
             # available options for poets and nouns
             region_list = ["Asia", "Europe"]
@@ -60,12 +57,14 @@ def app():
                 "Select a region", region_list)
 
             #  selected region will release the available choices
+            # if region_option == "Asia":
+            #     poet_option = st.radio("Available Genre", options=[
+            #         "Haiku", "Syair", "Yadu", "Sijo", "Kural"])  # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka
             if region_option == "Asia":
-                poet_option = st.radio("Available Genre", options=[
-                    "Haiku", "Syair", "Yadu", "Sijo", "Kural"])  # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka
+                poet_option = st.radio("Available Genre", options=asia_genres)  # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka    
             elif region_option == "Europe":
                 poet_option = st.radio(
-                    "Available Genre", options=["Victorian", "Edwardian", "Georgian", "Surrealistic", "Shakespearean"])
+                    "Available Genre", options=poetry_forms)
 
             # choices available for nouns
             noun_option = st.multiselect("Available Nouns", nouns_list)
@@ -82,21 +81,21 @@ def app():
                         filtered = filtered[:-1]
                     # st.write(filtered) # debug
 
-                st.session_state.textbox = "Write a " + poet_option + \
-                    " poem about the benefits of " + filtered
+                st.session_state.textbox = "Write a " + poet_option + " style"\
+                    " poem about the benefits of " + filtered + " in English"
 
         with col2:
-            st.title("Output appears here")
+            st.title("Pen is poised and ready")
 
             # for initializing textbox
             answer = st.text_area(
-                "Use the example below or input your own text in English",
+                "Use the prompt tweaked on the left or input your own text in English",
                 key="textbox",
                 max_chars=150
             )
 
             # submit button
-            if st.button("Submit"):
+            if st.button("Pen my poem!"):
                 try:
                     with st.spinner(text="In progress"):
                         report_text = process_prompt(st.session_state.textbox)
