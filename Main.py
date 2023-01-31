@@ -1,4 +1,9 @@
 import streamlit as st
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import random as rand
+import os
+from PIL import Image
 # from model import GeneralModel
 
 # checks if api key is valid
@@ -36,7 +41,8 @@ def app():
             # available options for poets and nouns
             region_list = ["Asia", "Europe"]
 
-            nouns_list = ["Singapore University of Technology and Design (SUTD)", "university education", "engineering", "STEM", "design thinking"]
+            nouns_list = [
+                "Singapore University of Technology and Design (SUTD)", "university education", "engineering", "STEM", "design thinking"]
             eng_poets_list = ["Shakespeare", "Seamus Heaney", "Edgar Allan Poe", "William Blake", "Robert Frost",
                               "Emily Dickinson", "Oscar Wilde", "George Bernard Shaw", "William Wordsworth", "Sylvia Plath"]
 
@@ -46,8 +52,9 @@ def app():
 
             poetry_forms = ['free verse', 'sonnet', 'acrostic', 'limerick',
                             'ode', 'solliloquy', 'elegy', 'ballad', 'villanelle', 'Victorian', 'Edwardian', 'Georgian', 'Baroque', 'Surrealistic', 'Shakespearean']
-            
-            asia_genres = ["Chinese: Airs (风)", "Chinese: Ode (雅)", "Chinese: Hymn (颂)", "Haiku", "Japanese: Tanka", "Malay: Syair", "Burmese: Yadu", "Korean: Sijo", "Indian or Sri Lankan: Kural"]
+
+            asia_genres = ["Chinese: Airs (风)", "Chinese: Ode (雅)", "Chinese: Hymn (颂)", "Haiku", "Japanese: Tanka",
+                           "Malay: Syair", "Burmese: Yadu", "Korean: Sijo", "Indian or Sri Lankan: Kural"]
 
             # available options for poets and nouns
             region_list = ["Asia", "Europe"]
@@ -61,7 +68,8 @@ def app():
             #     poet_option = st.radio("Available Genre", options=[
             #         "Haiku", "Syair", "Yadu", "Sijo", "Kural"])  # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka
             if region_option == "Asia":
-                poet_option = st.radio("Available Genre", options=asia_genres)  # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka    
+                # Japan, Malaysia, Myanmar, Korea, India & Sri Lanka
+                poet_option = st.radio("Available Genre", options=asia_genres)
             elif region_option == "Europe":
                 poet_option = st.radio(
                     "Available Genre", options=poetry_forms)
@@ -95,6 +103,7 @@ def app():
             )
 
             # submit button
+            report_text = ""
             if st.button("Pen my poem!"):
                 try:
                     with st.spinner(text="In progress"):
@@ -104,6 +113,33 @@ def app():
                     st.error("Error: " + str(e))
                     restart = st.button("Re-enter API Key",
                                         on_click=update_api_key(""))
+
+            # wordcloud
+            st.set_option("deprecation.showPyplotGlobalUse", False)
+            text = report_text
+            if text:
+                wdcloud = WordCloud().generate(text)
+                plt.figure(figsize=(10, 5), facecolor="k")
+                plt.tight_layout(pad=0)
+                plt.imshow(wdcloud)
+                plt.axis("off")
+
+                # save images
+                idx = str(rand.randint(0, 1000))
+                conti = ['a', 'b', 'c', 'd', 'e', 'f']
+                choosen = rand.choice(conti)
+                plt.savefig(
+                    f"clouds/wordcloud{idx}{choosen}.png", bbox_inches='tight', dpi=300)
+                plt.show()
+                st.pyplot()
+
+        #  display all previous wordclouds; draft
+        with st.container():
+            for files in os.listdir("clouds"):
+                print(files)
+                img = Image.open("clouds/"+files)
+                st.image(img, width=300)
+
     else:
         with st.form("API_Key_Form"):
             api_key = st.text_input("APIkey", type="password")
